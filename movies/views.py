@@ -8,3 +8,12 @@ def MovieListView(request):
     print(movies.values())
     
     return JsonResponse({"movies": list(movies.values())})
+
+def MovieDetailView(request, pk):
+    movie = Movie.objects.get(pk=pk)
+    return JsonResponse({"movie": {
+        "title": movie.title,
+        "description": movie.description,
+        "year": movie.year,
+        "active": movie.active,
+    }})
