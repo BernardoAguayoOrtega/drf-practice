@@ -40,6 +40,9 @@ INSTALLED_APPS = [
     
     # start of our apps
     'movies',
+    
+    # third party apps
+    "rest_framework",
 ]
 
 MIDDLEWARE = [
