@@ -13,3 +13,6 @@ class MovieSerializer(serializers.ModelSerializer):
     description = serializers.CharField()
     year = serializers.IntegerField()
     active = serializers.BooleanField(default=True)
+
+    def create(self, validated_data):
+        return Movie.objects.create(**validated_data)
