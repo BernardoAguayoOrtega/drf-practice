@@ -3,13 +3,21 @@ from rest_framework import serializers
 from movies.models import Movie
 
 
+def title_length_validator(value):
+    if len(value) < 10:
+        raise serializers.ValidationError("Title is too short")
+    if len(value) > 100:
+        raise serializers.ValidationError("Title is too long")
+    return value
+
+
 class MovieSerializer(serializers.ModelSerializer):
     class Meta:
         model = Movie
         fields = "__all__"
 
     id = serializers.IntegerField(read_only=True)
-    title = serializers.CharField()
+    title = serializers.CharField(validators=[title_length_validator])
     description = serializers.CharField()
     year = serializers.IntegerField()
     active = serializers.BooleanField(default=True)
@@ -33,10 +41,3 @@ class MovieSerializer(serializers.ModelSerializer):
         if data["title"] == data["description"]:
             raise serializers.ValidationError("Title and description must be different")
         return data
-
-    def validate_title(self, value):
-        if len(value) < 10:
-            raise serializers.ValidationError("Title is too short")
-        if len(value) > 100:
-            raise serializers.ValidationError("Title is too long")
-        return value
