@@ -13,6 +13,13 @@ class MovieSerializer(serializers.ModelSerializer):
     description = serializers.CharField()
     year = serializers.IntegerField()
     active = serializers.BooleanField(default=True)
+    
+    def validate_title(self, value):
+        if len(value) < 2:
+            raise serializers.ValidationError("Title is too short")
+        if len(value) > 100:
+            raise serializers.ValidationError("Title is too long")
+        return value
 
     def create(self, validated_data):
         return Movie.objects.create(**validated_data)
